@@ -1,0 +1,13 @@
+{
+  "name": "claude-dev",
+  "version": "1.0.0",
+  "description": "Static HTML demo with tests",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.6.1",
+    "jsdom": "^24.0.0"
+  }
+}
