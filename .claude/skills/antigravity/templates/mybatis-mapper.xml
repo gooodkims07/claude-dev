@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="{{EntityName}}Mapper">
+
+  <resultMap id="{{EntityName}}Result" type="{{EntityName}}">
+    {{#columns}}
+    <result column="{{columnName}}" property="{{propertyName}}"/>
+    {{/columns}}
+  </resultMap>
+
+  <select id="selectAll" resultMap="{{EntityName}}Result">
+    SELECT * FROM {{tableName}}
+  </select>
+
+  <select id="selectById" resultMap="{{EntityName}}Result">
+    SELECT * FROM {{tableName}}
+    WHERE {{pkColumn}} = #{id}
+  </select>
+
+  <insert id="insert">
+    INSERT INTO {{tableName}} (
+      {{#insertColumns}}
+      {{columnName}}{{^last}},{{/last}}
+      {{/insertColumns}}
+    ) VALUES (
+      {{#insertColumns}}
+      #{ {{propertyName}} }{{^last}},{{/last}}
+      {{/insertColumns}}
+    )
+  </insert>
+
+  <update id="update">
+    UPDATE {{tableName}}
+    SET
+      {{#updateColumns}}
+      {{columnName}} = #{ {{propertyName}} }{{^last}},{{/last}}
+      {{/updateColumns}}
+    WHERE {{pkColumn}} = #{id}
+  </update>
+
+  <delete id="delete">
+    DELETE FROM {{tableName}}
+    WHERE {{pkColumn}} = #{id}
+  </delete>
+
+</mapper>

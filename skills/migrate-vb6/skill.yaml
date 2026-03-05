@@ -1,0 +1,6 @@
+name: migrate-vb6
+description: Migrates a VB6 form to a React frontend and a Node.js backend using MyBatis and Oracle.
+arguments:
+  - name: vb6_file
+    type: string
+    description: Path to the VB6 .frm file to migrate.

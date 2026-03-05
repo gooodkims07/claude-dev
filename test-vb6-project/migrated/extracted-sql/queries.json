@@ -1,0 +1,63 @@
+{
+  "source": "test-vb6-project",
+  "extractedAt": "2026-02-07",
+  "queries": [
+    {
+      "id": "Q001",
+      "type": "SELECT",
+      "table": "T_USER",
+      "description": "ValidateUser - 사용자 인증 조회",
+      "originalSql": "SELECT * FROM T_USER WHERE USER_ID = '" & userId & "' AND PASSWORD = '" & password & "' AND USE_YN = 'Y'",
+      "mybatisId": "validateUser",
+      "parameters": ["userId", "password"],
+      "isDynamic": true,
+      "sourceFile": "UserService.cls",
+      "line": 48
+    },
+    {
+      "id": "Q002",
+      "type": "UPDATE",
+      "table": "T_USER",
+      "description": "UpdateLastLogin - 마지막 로그인 시간 업데이트",
+      "originalSql": "UPDATE T_USER SET LAST_LOGIN = SYSDATE WHERE USER_ID = '" & userId & "'",
+      "mybatisId": "updateLastLogin",
+      "parameters": ["userId"],
+      "isDynamic": true,
+      "sourceFile": "UserService.cls",
+      "line": 74
+    },
+    {
+      "id": "Q003",
+      "type": "SELECT",
+      "table": "T_USER, T_DEPT",
+      "description": "GetUserList - 부서별 사용자 목록 조회 (JOIN)",
+      "originalSql": "SELECT U.USER_ID, U.USER_NAME, U.EMAIL, D.DEPT_NAME FROM T_USER U INNER JOIN T_DEPT D ON U.DEPT_CODE = D.DEPT_CODE WHERE U.DEPT_CODE = '" & deptCode & "' AND U.USE_YN = 'Y' ORDER BY U.USER_NAME",
+      "mybatisId": "selectUserList",
+      "parameters": ["deptCode"],
+      "isDynamic": true,
+      "sourceFile": "UserService.cls",
+      "line": 82
+    },
+    {
+      "id": "Q004",
+      "type": "SELECT",
+      "table": "T_USER",
+      "description": "GetUserCount - 부서별 사용자 수 조회 (동적 조건)",
+      "originalSql": "SELECT COUNT(*) FROM T_USER WHERE DEPT_CODE = '" & deptCode & "' [AND USE_YN = 'Y']",
+      "mybatisId": "countUser",
+      "parameters": ["deptCode", "includeInactive"],
+      "isDynamic": true,
+      "hasConditional": true,
+      "sourceFile": "DBUtil.bas",
+      "line": 79
+    }
+  ],
+  "summary": {
+    "totalQueries": 4,
+    "selectCount": 3,
+    "updateCount": 1,
+    "insertCount": 0,
+    "deleteCount": 0,
+    "dynamicSqlCount": 4
+  }
+}

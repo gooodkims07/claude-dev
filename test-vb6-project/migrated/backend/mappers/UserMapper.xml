@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserMapper">
+
+  <!-- VB6: ValidateUser에서 사용 -->
+  <select id="validateUser" resultType="map">
+    SELECT USER_ID, USER_NAME, EMAIL, LAST_LOGIN
+    FROM T_USER
+    WHERE USER_ID = #{userId}
+      AND PASSWORD = #{password}
+      AND USE_YN = 'Y'
+  </select>
+
+  <!-- VB6: UpdateLastLogin에서 사용 -->
+  <update id="updateLastLogin">
+    UPDATE T_USER
+    SET LAST_LOGIN = SYSDATE
+    WHERE USER_ID = #{userId}
+  </update>
+
+  <!-- VB6: GetUserList에서 사용 (INNER JOIN) -->
+  <select id="selectUserList" resultType="map">
+    SELECT
+      U.USER_ID as userId,
+      U.USER_NAME as userName,
+      U.EMAIL as email,
+      D.DEPT_NAME as deptName
+    FROM T_USER U
+    INNER JOIN T_DEPT D ON U.DEPT_CODE = D.DEPT_CODE
+    WHERE U.DEPT_CODE = #{deptCode}
+      AND U.USE_YN = 'Y'
+    ORDER BY U.USER_NAME
+  </select>
+
+  <!-- VB6: GetUserCount에서 사용 (동적 SQL) -->
+  <select id="countUser" resultType="int">
+    SELECT COUNT(*)
+    FROM T_USER
+    WHERE DEPT_CODE = #{deptCode}
+    <if test="!includeInactive">
+      AND USE_YN = 'Y'
+    </if>
+  </select>
+
+  <!-- 추가 CRUD 쿼리 -->
+  <select id="selectAll" resultType="map">
+    SELECT * FROM T_USER WHERE USE_YN = 'Y'
+  </select>
+
+  <select id="selectById" resultType="map">
+    SELECT * FROM T_USER WHERE USER_ID = #{userId}
+  </select>
+
+  <insert id="insert">
+    INSERT INTO T_USER (
+      USER_ID, USER_NAME, PASSWORD, EMAIL, DEPT_CODE, USE_YN, CREATED_AT
+    ) VALUES (
+      #{userId}, #{userName}, #{password}, #{email}, #{deptCode}, 'Y', SYSDATE
+    )
+  </insert>
+
+  <update id="update">
+    UPDATE T_USER
+    SET USER_NAME = #{userName},
+        EMAIL = #{email},
+        DEPT_CODE = #{deptCode}
+    WHERE USER_ID = #{userId}
+  </update>
+
+  <delete id="delete">
+    UPDATE T_USER
+    SET USE_YN = 'N', DELETED_AT = SYSDATE
+    WHERE USER_ID = #{userId}
+  </delete>
+
+</mapper>

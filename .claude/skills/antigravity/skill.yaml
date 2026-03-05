@@ -1,0 +1,113 @@
+name: antigravity
+description: |
+  VB6 레거시 코드를 현대적 기술 스택으로 마이그레이션하는 스킬.
+  Frontend: React + Vite + TypeScript
+  Backend: Node.js + Express + MyBatis + Oracle
+
+  기능:
+  - VB6 코드 분석 (폼, 클래스, 모듈)
+  - SQL 추출 및 MyBatis 매퍼 생성
+  - React 컴포넌트 자동 생성
+  - Node.js API 서버 생성
+
+version: 1.0.0
+author: Claude Code
+target_stack:
+  frontend:
+    - react: ^18.x
+    - vite: ^5.x
+    - typescript: ^5.x
+    - axios: ^1.x
+    - @mui/material: ^5.x
+  backend:
+    - node: ^20.x
+    - express: ^4.x
+    - typescript: ^5.x
+    - mybatis-mapper: ^0.9.x
+    - oracledb: ^6.x
+
+database:
+  type: oracle
+  driver: oracledb
+
+commands:
+  analyze:
+    description: VB6 프로젝트/파일 분석
+    args:
+      - name: path
+        description: VB6 파일(.frm, .cls, .bas) 또는 프로젝트(.vbp) 경로
+        required: true
+
+  extract-sql:
+    description: VB6 코드에서 SQL 쿼리 추출
+    args:
+      - name: path
+        description: VB6 파일 경로
+        required: true
+      - name: output
+        description: 출력 디렉토리
+        required: false
+        default: ./extracted/sql
+
+  frontend:
+    description: React + Vite 프론트엔드 생성
+    args:
+      - name: path
+        description: VB6 폼(.frm) 파일 경로
+        required: true
+      - name: output
+        description: 출력 디렉토리
+        required: false
+        default: ./frontend
+
+  backend:
+    description: Node.js + MyBatis 백엔드 생성
+    args:
+      - name: path
+        description: VB6 모듈/클래스 경로
+        required: true
+      - name: output
+        description: 출력 디렉토리
+        required: false
+        default: ./backend
+
+  migrate:
+    description: VB6 프로젝트 전체 마이그레이션
+    args:
+      - name: vbp-path
+        description: VB6 프로젝트(.vbp) 파일 경로
+        required: true
+      - name: output
+        description: 출력 디렉토리
+        required: false
+        default: ./migrated
+
+patterns:
+  - "**/*.bas"
+  - "**/*.cls"
+  - "**/*.frm"
+  - "**/*.vbp"
+
+mapping:
+  vb6_to_react:
+    Form: React 컴포넌트
+    CommandButton: MUI 버튼
+    TextBox: MUI 텍스트 필드
+    ComboBox: MUI 셀렉트
+    DataGrid: MUI 데이터 그리드
+    Label: MUI 타이포그래피
+    CheckBox: MUI 체크박스
+    OptionButton: MUI 라디오
+
+  vb6_to_nodejs:
+    Class: TypeScript 클래스
+    Module: 서비스/컨트롤러
+    Property: 인터페이스/타입
+    Sub: async 함수
+    Function: async 함수 (반환값 있음)
+
+  ado_to_mybatis:
+    Connection: 오라클 풀
+    Command: Mapper.select/insert/update/delete
+    Recordset: 쿼리 결과
+    Parameters: #{param} 플레이스홀더
